@@ -1,7 +1,7 @@
 import React from 'react'
-import Logo from './img/logo.png'
+import Logo from '../img/logo.png'
 import { FaShoppingBag } from 'react-icons/fa'
-import Avatar from './img/avatar.png'
+import Avatar from '../img/avatar.png'
 function Header() {
     return (
         <header className='fixed z-50 w-screen  p-6 px-16'>
