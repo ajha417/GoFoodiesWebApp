@@ -2,15 +2,29 @@ import React from 'react'
 import Logo from '../img/logo.png'
 import { FaShoppingBag } from 'react-icons/fa'
 import Avatar from '../img/avatar.png'
+// import { app } from '../firebase.config'
+import { app } from '../firebase.config.js'
+import { motion } from 'framer-motion'
+import { Link } from 'react-router-dom'
+import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import { async } from '@firebase/util'
+
 function Header() {
+    const firebaseAuth = getAuth();
+    const provider  = new GoogleAuthProvider()
+
+    const login = async()=>{
+        const response = await signInWithPopup(firebaseAuth,provider)
+        console.log(response)
+    }
     return (
         <header className='fixed z-50 w-screen  p-6 px-16'>
             {/* this is for desktop and tablet */}
             <div className='hidden md:flex w-full h-full p-4 item-center justify-between'>
-                <div className='flex item-center gap-2'>
+                <Link to={"/"} className='flex item-center gap-2'>
                     <img src={Logo} alt="logo" className='w-8 object-cover' />
                     <p className='text-headingColor text-xl font-bold'>Go Foodies</p>
-                </div>
+                </Link>
                 <div className='flex items-center gap-8'>
                     <ul className='flex items-center gap-8'>
                         <li className='text-textColor hover:text-headingColor text-base duration-100 transition-all ease-in-out cursor-pointer'>Home</li>
@@ -24,7 +38,12 @@ function Header() {
                             <p className='text-xs font-semibold text-white'>2</p>
                         </div>
                     </div>
-                    <img src={Avatar} className='w-10 min-w-[40px] h-10 min-h-[40px] drop-shadow-xl' alt="avatar" />
+                    <div className='relative'>
+                        <motion.img
+                         whileTap={{ scale: 0.6 }} src={Avatar} 
+                         className='w-10 min-w-[40px] h-10 min-h-[40px] drop-shadow-xl cursor-pointer'
+                          alt="avatar" onClick={login}/>
+                    </div>
                 </div>
             </div>
             {/* this is for mobile */}
