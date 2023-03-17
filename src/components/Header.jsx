@@ -45,7 +45,7 @@ function Header() {
         });
     }
     return (
-        <header className='fixed z-50 w-screen  p-3 px-4 md:p-6 md:px-16'>
+        <header className='fixed z-50 w-screen  p-3 px-4 md:p-6 md:px-16 bg-primary'>
             {/* this is for desktop and tablet */}
             <div className='hidden md:flex w-full h-full p-4 item-center justify-between'>
                 <Link to={"/"} className='flex item-center gap-2'>
@@ -58,10 +58,10 @@ function Header() {
                         animate={{ opacity: 1, x: 0 }}
                         exit={{ opacity: 0, x: 200 }}
                         className='flex items-center gap-8'>
-                        <li className='text-textColor hover:text-headingColor text-base duration-100 transition-all ease-in-out cursor-pointer'>Home</li>
-                        <li className='text-textColor hover:text-headingColor text-base duration-100 transition-all ease-in-out cursor-pointer'>Menu</li>
-                        <li className='text-textColor hover:text-headingColor text-base duration-100 transition-all ease-in-out cursor-pointer'>About Us</li>
-                        <li className='text-textColor hover:text-headingColor text-base duration-100 transition-all ease-in-out cursor-pointer'>Service</li>
+                        <li className='text-textColor hover:text-headingColor text-base duration-100 transition-all ease-in-out cursor-pointer' onClick={()=>setIsMenu(false)}>Home</li>
+                        <li className='text-textColor hover:text-headingColor text-base duration-100 transition-all ease-in-out cursor-pointer' onClick={()=>setIsMenu(false)}>Menu</li>
+                        <li className='text-textColor hover:text-headingColor text-base duration-100 transition-all ease-in-out cursor-pointer' onClick={()=>setIsMenu(false)}>About Us</li>
+                        <li className='text-textColor hover:text-headingColor text-base duration-100 transition-all ease-in-out cursor-pointer' onClick={()=>setIsMenu(false)}>Service</li>
                     </motion.ul>
                     <div className='relative flex items-center justify-center'>
                         <FaShoppingBag className='text-textColor  text-2xl hover:red cursor-pointer' />
@@ -84,7 +84,7 @@ function Header() {
                                     {
                                         user && user.email === "amitjhasmart@gmail.com" && (
                                             <Link to={'/createItem'}>
-                                                <p className='px-4 py-3 cursor-pointer items-center flex gap-3 hover:bg-slate-200 transition-all duration-100 ease-in-out text-textColor text-base'>New Item <MdAdd /></p>
+                                                <p className='px-4 py-3 cursor-pointer items-center flex gap-3 hover:bg-slate-200 transition-all duration-100 ease-in-out text-textColor text-base' onClick={()=>setIsMenu(false)}>New Item <MdAdd /></p>
                                             </Link>
                                         )
                                     }

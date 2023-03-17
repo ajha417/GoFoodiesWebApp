@@ -1,7 +1,7 @@
 // import logo from './logo.svg';
 import './App.css';
 import { AnimatePresence } from 'framer-motion';
-import { Header, MainContainer, CreateContainer } from './components';
+import { Header, MainContainer, CreateContainer,HomeContainer } from './components';
 import { Routes, Route } from 'react-router-dom';
 function App() {
   return (
