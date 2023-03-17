@@ -5,10 +5,10 @@ import { Header, MainContainer, CreateContainer } from './components';
 import { Routes, Route } from 'react-router-dom';
 function App() {
   return (
-    <AnimatePresence>
+    <AnimatePresence mode='wait'>
       <div className="w-screen h-auto flex flex-col bg-primary">
         <Header />
-        <main className='mt-24 p-8 w-full'>
+        <main className='mt-14 md:mt-20 md:p-8 p-4 w-full'>
           <Routes>
             <Route path="/*" element={<MainContainer />} />
             <Route path="/createItem" element={<CreateContainer />} />
