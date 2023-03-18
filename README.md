@@ -1,3 +1,4 @@
+#This website is developed using react as frontend and for backend firebase is used.
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
