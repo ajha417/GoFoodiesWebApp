@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react'
-import { MdShoppingBasket } from 'react-icons/md'
+// import { MdShoppingBasket } from 'react-icons/md'
 import { FaShoppingBag } from 'react-icons/fa'
 import { motion } from 'framer-motion'
 
@@ -10,16 +10,16 @@ const RowContainer = ({ flag,data,scrollValue }) => {
         rowContainer.current.scrollLeft += scrollValue;
     },[scrollValue])
     return (
-        <div  ref={rowContainer} className={`w-full h-[245px] flex items-center gap-3 my-12  scroll-smooth bg-pink-50
+        <div  ref={rowContainer} className={`w-full flex items-center gap-3 my-12  scroll-smooth bg-pink-50
      ${flag ? 'overflow-x-scroll scrollbar-none' : 'overflow-x-hidden flex-wrap'}`}>
            {
             data && data.map(item=>(
-                <div key={item?.id} className='w-300  min-w-[300px] md:min-w-[340px] 
-                md:w-340 hover:drop-shadow-xl h-auto  my-12 bg-cardOverlay rounded-lg shadow-lg p-2 flex flex-col
+                <div key={item?.id} className='w-275 h-[275px]  min-w-[375px] md:min-w-[300px] 
+                md:w-300 hover:drop-shadow-xl my-12 bg-cardOverlay rounded-lg shadow-lg p-2 flex flex-col
                 items-center justify-between
                 backdrop-blue-lg'>
                    <div className='w-full flex  items-center justify-between'>
-                       <motion.img whileHover={{ scale: 1.2 }} className='w-44 z-50 -mt-8'
+                       <motion.img whileHover={{ scale: 1.2 }} className='w-44  -mt-8'
                            src={item?.imageURL} alt="" />
                        <motion.div whileTap={{ scale: 0.75 }} className='w-10 h-10 rounded-full bg-pink-600 cursor-pointer  hover:shadow-lg flex items-center justify-center'>
                            <FaShoppingBag className='text-white' />
