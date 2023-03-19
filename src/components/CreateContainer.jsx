@@ -1,10 +1,15 @@
 import React, { useState } from 'react'
 import { motion } from 'framer-motion'
 import { MdFastfood, MdCloudUpload, MdDelete, MdFoodBank, MdAttachMoney } from 'react-icons/md'
-import {FaRupeeSign} from 'react-icons/fa'
-import {BsCurrencyRupee} from 'react-icons/bs'
+import { FaRupeeSign } from 'react-icons/fa'
+import { BsCurrencyRupee } from 'react-icons/bs'
 import { categories } from '../utils/data';
 import Loader from './Loader';
+import { deleteObject, getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage'
+import { storage } from '../firebase.config'
+import { getAllFoodItems, saveItem } from '../utils/firebaseFunctions'
+import { useStateValue } from '../context/StateProvider'
+import { actionType } from '../context/reducer'
 
 function CreateContainer() {
   const [title, setTitle] = useState("");
@@ -17,16 +22,118 @@ function CreateContainer() {
   const [msg, setMsg] = useState("")
   const [isLoading, setIsLoading] = useState(false)
 
-  const upload = () => {
+  const [{},dispatch] = useStateValue();
 
-  }
+  const upload = (e) => {
+    setIsLoading(true);
+    const imageFile = e.target.files[0];
+    const storageRef = ref(storage, `Images/${Date.now()}-${imageFile.name}`)
+    const uploadTask = uploadBytesResumable(storageRef, imageFile);
+
+
+    uploadTask.on('state_changed', (snapshot) => {
+      const uploadProgress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+    }, (error) => {
+      console.log(error);
+      setFields(true);
+      setAlertStatus("danger");
+      setMsg("Error while uploading... Please try Again!!!");
+      setTimeout(() => {
+        setFields(false);
+        setIsLoading(false);
+      }, 4000)
+    }, () => {
+      getDownloadURL(uploadTask.snapshot.ref).then(downloadURL => {
+        setImageAsset(downloadURL);
+        setIsLoading(false);
+        setFields(true);
+        setMsg("Image uploaded successfully!");
+        setAlertStatus("success");
+        setTimeout(() => {
+          setFields(false);
+        }, 4000)
+      })
+    })
+  };
 
   const deleteImage = () => {
+    setIsLoading(true);
+    const deleteRef = ref(storage, imageAsset);
+    deleteObject(deleteRef).then(() => {
+      setImageAsset(null);
+      setIsLoading(false);
+      setFields(true);
+      setMsg("Image deleted successfully!!!");
+      setAlertStatus("success");
+      setTimeout(() => {
+        setFields(false);
+      }, 4000);
+    })
 
   }
-  const saveDetails = () =>{
-     
+  const saveDetails = () => {
+    setIsLoading(true);
+    try {
+      if ((!title || !calories || !imageAsset || !price || !category)) {
+        setFields(true);
+        setAlertStatus("danger");
+        setMsg("Error while uploading... Please try Again!!!");
+        setTimeout(() => {
+          setFields(false);
+          setIsLoading(false);
+        }, 4000);
+      }
+      else{
+        const data = {
+          id: `${Date.now()}`,
+          title : title,
+          imageURL : imageAsset,
+          category : category,
+          calories : calories,
+          qty : 1,
+          price : price
+        }
+        saveItem(data);
+        setFields(true);
+        setIsLoading(false);
+        setAlertStatus("success");
+        setMsg("Data uploaded successfully !!!");
+        clearData();
+        setTimeout(() => {
+          setFields(false);
+        }, 4000);
+
+      }
+    }
+    catch (error) {
+      console.log(error);
+      setFields(true);
+      setIsLoading(false);
+      setAlertStatus("danger");
+      setMsg("Error while uploading... Please try Again!!!");
+      setTimeout(() => {
+        setFields(false);
+      }, 4000);
+    }
+    fetchData();
+  };
+  const clearData = ()=>{
+    setTitle("");
+    setImageAsset(null);
+    setCalories("");
+    setPrice("");
+    setCategory("Select Category");
   }
+
+  const fetchData = async()=>{
+    await getAllFoodItems().then(data=>{
+      // console.log(data)
+      dispatch({
+        type : actionType.SET_FOOD_ITEMS,
+        foodItems : data
+      })
+    });
+  };
   return (
     <div className='w-full h-auto min-h-screen flex items-center justify-center'>
       <div className='w-[90%] md:w-[75%] border border-gray-300 rounded-lg 
@@ -49,7 +156,7 @@ function CreateContainer() {
               placeholder:text-gray-00
                text-textColor'
             onChange={(e) => setTitle(e.target.value)}
-            required value={title} placeholder="Give me a title" name="" id="" />
+            required value={title} placeholder="Give me a title" name="title" />
         </div>
         <div className='w-full'>
           <select onChange={(e) => setCategory(e.target.value)} className='border-b-2 outline-none w-full text-base
@@ -97,22 +204,22 @@ function CreateContainer() {
           <div className='border-b border-pink-200 w-full py-2 flex items-center gap-2'>
             <MdFoodBank className='text-gray-700 text-2xl' />
             <input type="text" required placeholder='Calories'
-            value={calories}
-            onChange={(e)=>setCalories(e.target.value)}
-             className='w-full h-full text-textColor text-lg
+              value={calories}
+              onChange={(e) => setCalories(e.target.value)}
+              className='w-full h-full text-textColor text-lg
                 outline-none bg-transparent border-none placeholder:text-gray-400' />
           </div>
           <div className='border-b border-blue-200 w-full py-2 flex items-center gap-2'>
             <BsCurrencyRupee className='text-gray-700 mx-2 text-2xl' />
             <input type="text" required placeholder='Price'
-            value={price}
-            onChange={(e)=>setPrice(e.target.value)}
-             className='w-full h-full text-textColor text-lg
+              value={price}
+              onChange={(e) => setPrice(e.target.value)}
+              className='w-full h-full text-textColor text-lg
                 outline-none bg-transparent border-none placeholder:text-gray-400' />
           </div>
         </div>
         <div className='flex items-center w-full'>
-            <button type='button' className='ml-10 md:ml-auto  w-full md:w-auto
+          <button type='button' className='ml-10 md:ml-auto  w-full md:w-auto
             border-none outline-none bg-pink-400 px-12 py-2
             rounded-lg text-lg text-white font-semibold' onClick={saveDetails}>Save</button>
         </div>
