@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import HomeContainer from './HomeContainer'
 import {motion} from 'framer-motion'
 import {MdChevronLeft,MdChevronRight} from 'react-icons/md'
@@ -7,6 +7,12 @@ import { useStateValue } from '../context/StateProvider'
 
 function MainContainer() {
   const [{foodItems},dispatch] = useStateValue()
+
+  const [scrollValue,setScrollValue] = useState(0);
+  useEffect(()=>{
+
+  },[scrollValue])
+  
   return (
    <div className='w-full h-auto flex flex-col items-center justify-center'>
       <HomeContainer/>
@@ -19,17 +25,21 @@ function MainContainer() {
             Our Fresh & healthy fruits
           </p>
           <div className='hidden md:flex gap-3 items-center'>
-            <motion.div whileTap={{scale:0.75}} className='w-8 h-8 rounded-lg bg-pink-300 hover:bg-pink-500 cursor-pointer 
-            transition-all hover:shadow-lg duration-100 ease-in-out flex items-center justify-center'>
+            <motion.div whileTap={{scale:0.75}} 
+            className='w-8 h-8 rounded-lg bg-pink-300 hover:bg-pink-500 cursor-pointer 
+            transition-all hover:shadow-lg duration-100 ease-in-out flex items-center justify-center'
+            onClick={()=>setScrollValue(-200)}>
               <MdChevronLeft className='text-base text-white'/>    
             </motion.div>
-            <motion.div whileTap={{scale:0.75}} className='w-8 h-8 rounded-lg bg-pink-300 hover:bg-pink-500 cursor-pointer 
-            transition-all hover:shadow-lg duration-100 ease-in-out flex items-center justify-center'>
+            <motion.div whileTap={{scale:0.75}} 
+            className='w-8 h-8 rounded-lg bg-pink-300 hover:bg-pink-500 cursor-pointer 
+            transition-all hover:shadow-lg duration-100 ease-in-out flex items-center justify-center'
+            onClick={()=>setScrollValue(200)}>
               <MdChevronRight className='text-base text-white'/>
             </motion.div>
           </div>
         </div>
-        <RowContainer flag={true} data={foodItems?.filter(n=>n.category==='fruits')}/>
+        <RowContainer scrollValue={scrollValue} flag={true} data = {foodItems?.filter(n=>n.category === "fuits")}/>
       </section>
    </div>
 
