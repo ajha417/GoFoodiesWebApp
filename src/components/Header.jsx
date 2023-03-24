@@ -1,5 +1,6 @@
 import React from 'react'
 import Logo from '../img/logo.png'
+import Logoo from '../img/logoo.png'
 import { FaShoppingBag } from 'react-icons/fa'
 import { MdLogout, MdAdd } from 'react-icons/md'
 import Avatar from '../img/avatar.png'
@@ -55,8 +56,8 @@ function Header() {
             {/* this is for desktop and tablet */}
             <div className='hidden md:flex w-full h-full p-4 item-center justify-between'>
                 <Link to={"/"} className='flex item-center gap-2'>
-                    <img src={Logo} alt="logo" className='w-8 object-cover' />
-                    <p className='text-headingColor text-xl font-bold'>Go Foodies</p>
+                    <img src={Logoo} alt="logo" className='rounded-full w-10 h-10 object-cover' />
+                    <p className='text-pink-700 text-xl font-bold'>Go Foodies</p>
                 </Link>
                 <div className='flex items-center gap-8'>
                     <motion.ul
@@ -64,10 +65,18 @@ function Header() {
                         animate={{ opacity: 1, x: 0 }}
                         exit={{ opacity: 0, x: 200 }}
                         className='flex items-center gap-8'>
-                        <li className='text-textColor hover:text-headingColor text-base duration-100 transition-all ease-in-out cursor-pointer' onClick={() => setIsMenu(false)}>Home</li>
-                        <li className='text-textColor hover:text-headingColor text-base duration-100 transition-all ease-in-out cursor-pointer' onClick={() => setIsMenu(false)}>Menu</li>
-                        <li className='text-textColor hover:text-headingColor text-base duration-100 transition-all ease-in-out cursor-pointer' onClick={() => setIsMenu(false)}>About Us</li>
-                        <li className='text-textColor hover:text-headingColor text-base duration-100 transition-all ease-in-out cursor-pointer' onClick={() => setIsMenu(false)}>Service</li>
+                        <li className='text-textColor
+                        hover:text-headingColor text-base duration-100 transition-all ease-in-out cursor-pointer' onClick={() => setIsMenu(false)}>Home</li>
+                        <li className='text-textColor
+                        hover:text-headingColor text-base duration-100 transition-all ease-in-out cursor-pointer' onClick={() => setIsMenu(false)}>Menu</li>
+                        <Link to={'/orderDetails'}>
+                        <li className='text-textColor
+                         hover:text-headingColor text-base duration-100 transition-all ease-in-out cursor-pointer' onClick={() => setIsMenu(false)}>My Orders</li>
+                        </Link>
+                        <li className='text-textColor
+                         hover:text-headingColor text-base duration-100 transition-all ease-in-out cursor-pointer' onClick={() => setIsMenu(false)}>About Us</li>
+                        <li className='text-textColor
+                         hover:text-headingColor text-base duration-100 transition-all ease-in-out cursor-pointer' onClick={() => setIsMenu(false)}>Service</li>
                     </motion.ul>
                     <div className='relative flex items-center justify-center' onClick={showCart}>
                         <FaShoppingBag className='text-textColor  text-2xl hover:red cursor-pointer' />
@@ -94,7 +103,9 @@ function Header() {
                                     {
                                         user && user.email === "amitjhasmart@gmail.com" && (
                                             <Link to={'/createItem'}>
-                                                <p className='px-4 py-3 cursor-pointer items-center flex gap-3 hover:bg-slate-200 transition-all duration-100 ease-in-out text-textColor text-base' onClick={() => setIsMenu(false)}>New Item <MdAdd /></p>
+                                                <p className='px-4 py-3 cursor-pointer items-center flex gap-3
+                                                 hover:bg-slate-200 transition-all duration-100 ease-in-out
+                                                  text-textColor text-base' onClick={() => setIsMenu(false)}>New Item <MdAdd /></p>
                                             </Link>
                                         )
                                     }
@@ -119,8 +130,8 @@ function Header() {
                         }
                 </div>
                 <Link to={"/"} className='flex item-center gap-2'>
-                    <img src={Logo} alt="logo" className='w-8 items-center object-cover' />
-                    <p className='text-headingColor text-xl font-bold'>Go Foodies</p>
+                    <img src={Logoo} alt="logo" className='w-10 rounded-full items-center object-cover' />
+                    <p className=' text-pink-700 text-xl font-bold'>Go Foodies</p>
                 </Link>
                 <div className='relative'>
                     <motion.img

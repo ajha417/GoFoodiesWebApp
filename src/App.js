@@ -1,7 +1,7 @@
 // import logo from './logo.svg';
 import './App.css';
 import { AnimatePresence } from 'framer-motion';
-import { Header, MainContainer, CreateContainer,HomeContainer } from './components';
+import { Header, MainContainer, CreateContainer,HomeContainer, OrderDetails } from './components';
 import { Routes, Route } from 'react-router-dom';
 import { useStateValue } from './context/StateProvider';
 import { getAllFoodItems } from './utils/firebaseFunctions';
@@ -29,6 +29,7 @@ function App() {
           <Routes>
             <Route path="/*" element={<MainContainer />} />
             <Route path="/createItem" element={<CreateContainer />} />
+            <Route path="/orderDetails" element={<OrderDetails />} />
           </Routes>
         </main>
       </div>

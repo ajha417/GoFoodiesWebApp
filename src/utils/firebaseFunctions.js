@@ -18,3 +18,11 @@ export const getAllFoodItems = async()=>{
     );
     return items.docs.map((doc)=> doc.data());
 }
+
+//get all order items from firebase
+export const getAllOrderItems = async()=>{
+    const items = await getDocs(
+        query(collection(firestore,"orderItems",orderBy("id","desc")))
+    );
+    return items.docs.map((doc)=>doc.data());
+}

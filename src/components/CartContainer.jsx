@@ -1,23 +1,52 @@
-import React from 'react'
+import React,{useState,useEffect} from 'react'
 import { MdKeyboardBackspace } from 'react-icons/md'
 import { RiRefreshFill } from 'react-icons/ri'
 import { useStateValue } from '../context/StateProvider'
 import { actionType } from '../context/reducer'
-
+// import {flag} from './CartItem';
 import { motion } from 'framer-motion'
 import EmptyCart from '../img/emptyCart.svg'
 import CartItem from './CartItem'
 
 function CartContainer() {
-
+    const [flag,setFlag] = useState(false);
     const [{ cartShow, cartItems, user }, dispatch] = useStateValue();
+    const [tot,setTot] = useState(1);
     const hideCart = () => {
         dispatch({
             type: actionType.SET_CART_SHOW,
             cartShow: !cartShow,
         })
     }
+    useEffect(()=>{
+        let totalPrice = cartItems.reduce(function(accumulator,item){
+            return accumulator+item.qty*item.price
+        },0);
+        console.log(totalPrice)
+        setTot(totalPrice);
+        console.log(tot)
+    },[tot,flag]);
+    useEffect(()=>{
+        setFlag(true)
+    },[tot])
+    const clearCart = ()=>{
+        dispatch({
+            type:actionType.SET_CARTITEMS,
+            cartItems:[]
+        });
+        localStorage.setItem("cartItems",JSON.stringify([]));
+    }
+    
+        const checkOut= ()=>{
 
+            // console.log(item);
+            dispatch({
+                type: actionType.SET_CARTITEMS,
+                orderItems: cartItems  //here we are breaking cartItems and appending item into it
+            });
+            localStorage.setItem("orderItems",JSON.stringify(cartItems))
+        }
+    
 
     return (
         <motion.div
@@ -45,7 +74,8 @@ function CartContainer() {
                             {/* cart Items */}
                             {
                                 cartItems && cartItems.map((item) => (
-                                    <CartItem key={item.id} data={item}/>
+                                    
+                                    <CartItem key={item.id} item={item} flag={false}/>
                                 ))
                             }
 
@@ -58,7 +88,7 @@ function CartContainer() {
                                 <p className='text-gray-900 text-lg'>Sub Total</p>
                                 <p className='text-gray-900 text-lg'>
                                     <span className='text-lg text-red-600'>&#8377; </span>
-                                    338
+                                    {tot}
                                 </p>
                             </div>
                             <div className='w-full flex items-center justify-between'>
@@ -75,7 +105,7 @@ function CartContainer() {
                                 <p className='text-gray-600 text-xl font-semibold'>Total</p>
                                 <p className='text-gray-600 text-xl font-semibold'>
                                     <span className='text-lg text-red-600'>&#8377; </span>
-                                    489
+                                    {tot + 70}
                                 </p>
                             </div>
 
@@ -85,7 +115,8 @@ function CartContainer() {
                                         whileTap={{ scale: 0.8 }}
                                         type='button'
                                         className='w-full p-2 rounded-full bg-gradient-to-bl from-pink-300 to-pink-900 text-gray-50 text-lg my-2
-                                        hover:shadow-lg '
+                                        hover:shadow-lg'
+                                        onClick={checkOut}
                                     >
                                         Check out
                                     </motion.button>
